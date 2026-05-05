@@ -24,9 +24,9 @@
         <div class="access-panel" id="access-panel">
             <h2>Acessar Painel</h2>
             <p>Digite seu código de acesso fornecido pelo ValiMarket:</p>
-            <div class="code-input-group">
-                <input type="text" id="codigo-input" placeholder="Seu código de acesso">
-                <button onclick="accessPanel()" class="btn-acessar">Acessar</button>
+            <div class="code-input-group" style="flex-direction: column; gap: 0.5rem;">
+                <input type="text" id="codigo-input" placeholder="Seu código de acesso" style="width: 100%; box-sizing: border-box;">
+                <button onclick="accessPanel()" class="btn-acessar" style="width: 100%; padding: 0.8rem; background: #38a169; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem;">Acessar</button>
             </div>
             <div class="message error" id="error-message" style="display:none;"></div>
         </div>

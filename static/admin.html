@@ -170,13 +170,17 @@
                 }
                 empresas.forEach(emp => {
                     const item = document.createElement('div');
-                    item.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 1rem; margin-bottom: 0.5rem; background: #f7fafc; border-radius: 8px; flex-wrap: wrap; gap: 0.5rem;';
+                    item.style.cssText = 'display: flex; justify-content: space-between; align-items: flex-start; padding: 1rem; margin-bottom: 0.5rem; background: #f7fafc; border-radius: 8px; flex-wrap: wrap; gap: 0.5rem;';
                     item.innerHTML = `
                         <div>
                             <strong>${emp.nome}</strong><br>
-                            <small style="color: #718096;">${emp.telefone} | ${emp.endereco}</small>
+                            <small style="color: #718096;">${emp.telefone} | ${emp.endereco}</small><br>
+                            <small style="color: #38a169; font-weight: 500;">Código: ${emp.codigoAcesso || 'N/A'}</small>
                         </div>
-                        <button class="delete-btn" onclick="deleteEmpresa('${emp.nome}', '${emp.telefone}')" style="background: #e53e3e; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Excluir</button>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem; min-width: 120px;">
+                            <input type="password" placeholder="Sua senha admin" id="admin-code-${emp.nome.replace(/\s/g, '-')}" style="padding: 0.4rem; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.9rem;">
+                            <button class="delete-btn" onclick="deleteEmpresa('${emp.nome}', '${emp.telefone}')" style="background: #e53e3e; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Excluir</button>
+                        </div>
                     `;
                     container.appendChild(item);
                 });
@@ -189,11 +193,17 @@
         async function deleteEmpresa(nome, telefone) {
             if (!confirm(`Tem certeza que deseja excluir a empresa "${nome}"? Todos os seus produtos também serão excluídos.`)) return;
 
+            const adminCode = document.getElementById(`admin-code-${nome.replace(/\s/g, '-')}`).value;
+            if (!adminCode) {
+                alert('Digite sua senha de admin para excluir.');
+                return;
+            }
+
             try {
-                const response = await fetch(`/admin/empresas?nome=${encodeURIComponent(nome)}&telefone=${encodeURIComponent(telefone)}`, {
+                const response = await fetch(`/admin/empresas`, {
                     method: 'DELETE',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ adminCode: document.getElementById('adminCode').value })
+                    body: JSON.stringify({ adminCode: adminCode, nome: nome, telefone: telefone })
                 });
 
                 if (response.ok) {
