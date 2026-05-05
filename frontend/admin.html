@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ValiMarket - Admin</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-container {
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .result-box {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            border-radius: 8px;
+            display: none;
+        }
+        .result-box h3 {
+            color: #276749;
+            margin-bottom: 0.5rem;
+        }
+        .code-display {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2d3748;
+            background: #f7fafc;
+            padding: 0.8rem;
+            border-radius: 8px;
+            text-align: center;
+            margin: 0.5rem 0;
+            letter-spacing: 1px;
+        }
+        .copy-btn {
+            background-color: #4299e1;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .copy-btn:hover {
+            background-color: #3182ce;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div>
+                <h1>ValiMarket - Admin</h1>
+                <p>Cadastro de novas empresas</p>
+            </div>
+            <a href="index.html" class="btn-back">← Início</a>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <form id="admin-form">
+            <div class="form-group">
+                <label for="adminCode">Sua Senha de Admin</label>
+                <input type="password" id="adminCode" required>
+            </div>
+            <div class="form-group">
+                <label for="nome">Nome da Empresa</label>
+                <input type="text" id="nome" required>
+            </div>
+            <div class="form-group">
+                <label for="telefone">WhatsApp da Empresa</label>
+                <input type="tel" id="telefone" required>
+            </div>
+            <div class="form-group">
+                <label for="endereco">Endereço da Empresa</label>
+                <input type="text" id="endereco" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email (opcional)</label>
+                <input type="email" id="email">
+            </div>
+            <button type="submit" class="submit-btn">Cadastrar Empresa</button>
+        </form>
+
+        <div class="result-box" id="result-box">
+            <h3>Empresa Cadastrada!</h3>
+            <p>O código de acesso para a empresa é:</p>
+            <div class="code-display" id="code-display"></div>
+            <button class="copy-btn" onclick="copyCode()">Copiar Código</button>
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: #718096;">
+                Envie este código para a empresa via WhatsApp. Ela usará para cadastrar produtos.
+            </p>
+        </div>
+
+        <div class="error-message" id="error-message"></div>
+    </div>
+
+    <script>
+        function copyCode() {
+            const code = document.getElementById('code-display').textContent;
+            navigator.clipboard.writeText(code);
+            alert('Código copiado!');
+        }
+
+        document.getElementById('admin-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const data = {
+                adminCode: form.adminCode.value,
+                nome: form.nome.value,
+                telefone: form.telefone.value,
+                endereco: form.endereco.value,
+                email: form.email.value
+            };
+
+            try {
+                const response = await fetch('http://localhost:5000/empresas', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    const empresa = await response.json();
+                    document.getElementById('code-display').textContent = empresa.codigoAcesso;
+                    document.getElementById('result-box').style.display = 'block';
+                    document.getElementById('error-message').style.display = 'none';
+                    form.reset();
+                } else {
+                    const error = await response.json();
+                    document.getElementById('error-message').textContent = `Erro: ${error.error}`;
+                    document.getElementById('error-message').style.display = 'block';
+                    document.getElementById('result-box').style.display = 'none';
+                }
+            } catch (error) {
+                document.getElementById('error-message').textContent = 'Erro ao conectar com o servidor.';
+                document.getElementById('error-message').style.display = 'block';
+                document.getElementById('result-box').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

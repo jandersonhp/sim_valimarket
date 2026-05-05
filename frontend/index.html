@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ValiMarket - Início</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .hero h1 {
+            color: #2d3748;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .hero p {
+            color: #718096;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-primary {
+            background-color: #38a169;
+            color: white;
+            font-size: 1.3rem;
+            padding: 1.2rem 2.5rem;
+            box-shadow: 0 4px 6px rgba(56, 161, 105, 0.2);
+        }
+        .btn-primary:hover {
+            background-color: #2f855a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(56, 161, 105, 0.3);
+        }
+        .btn-secondary {
+            background-color: white;
+            color: #38a169;
+            border: 2px solid #38a169;
+        }
+        .btn-secondary:hover {
+            background-color: #f0fff4;
+            transform: translateY(-2px);
+        }
+        .top-nav {
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+        }
+        .top-nav a {
+            background-color: #e2e8f0;
+            color: #2d3748;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        .top-nav a:hover {
+            background-color: #cbd5e0;
+        }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .buttons { flex-direction: column; }
+            .top-nav {
+                position: static;
+                text-align: center;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <a href="empresa.html">Sou Empresa</a>
+    </div>
+    <div class="hero">
+        <h1>ValiMarket</h1>
+        <p>Vitrine digital de produtos próximos do vencimento com desconto.</p>
+        <p>Encontre ofertas perto de você ou cadastre seus produtos como empresa.</p>
+        <div class="buttons">
+            <a href="cliente.html" class="btn btn-primary">Ver Ofertas</a>
+        </div>
+    </div>
+</body>
+</html>

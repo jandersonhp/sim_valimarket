@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ValiMarket - Ofertas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div>
+                <h1>ValiMarket</h1>
+                <p>Vitrine digital de produtos com desconto</p>
+            </div>
+            <a href="empresa.html" class="btn-back">Sou Empresa</a>
+        </div>
+    </header>
+
+    <div class="warning">
+        ⚠️ Os produtos devem ser confirmados diretamente no estabelecimento. Os preços podem variar.
+    </div>
+
+    <div class="filters-container">
+        <div class="tabs">
+            <button class="tab active" data-filter="all">Todos os Produtos</button>
+            <button class="tab" data-filter="near">Com Desconto (3 dias)</button>
+        </div>
+        <div class="filter-row">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Buscar por produto ou empresa...">
+            </div>
+            <div class="company-filter">
+                <select id="company-select">
+                    <option value="">Todas as empresas</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="products-grid" id="products-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

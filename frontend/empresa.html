@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ValiMarket - Painel da Empresa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="background: #f5f7fa; min-height: 100vh; padding: 1rem;">
+    <a href="index.html" class="btn-back">← Início</a>
+    
+    <div class="dashboard-container">
+        <h1 style="text-align: center; color: #2d3748; margin-bottom: 2rem; font-size: 1.8rem;">Painel da Empresa</h1>
+        
+        <!-- Status Message -->
+        <div class="status-message" id="status-message" style="display: none;">
+            <h3 id="status-title"></h3>
+            <p id="status-text"></p>
+        </div>
+        
+        <!-- Access Panel -->
+        <div class="access-panel" id="access-panel">
+            <h2>Acessar Painel</h2>
+            <p>Digite seu código de acesso fornecido pelo ValiMarket:</p>
+            <div class="code-input-group">
+                <input type="text" id="codigo-input" placeholder="Seu código de acesso">
+                <button onclick="accessPanel()">Acessar</button>
+            </div>
+            <div class="message error" id="error-message" style="display:none;"></div>
+        </div>
+
+        <!-- Options -->
+        <div class="options-grid" id="options" style="display: none;">
+            <div class="option-card" onclick="showRegisterForm()">
+                <div class="icon">📝</div>
+                <h3>Cadastrar Produto</h3>
+                <p>Adicione novos produtos com desconto</p>
+            </div>
+            <div class="option-card" onclick="showManageProducts()">
+                <div class="icon">📦</div>
+                <h3>Gerenciar Produtos</h3>
+                <p>Edite ou exclua produtos existentes</p>
+            </div>
+        </div>
+
+        <!-- Register/Edit Form -->
+        <div class="form-card" id="register-form" style="display: none;">
+            <button class="back-button" onclick="showOptions()">← Voltar</button>
+            <h2 id="form-title">Cadastrar Produto</h2>
+            <form id="product-form">
+                <input type="hidden" id="codigoAcesso">
+                <input type="hidden" id="productId">
+                
+                <div class="form-group">
+                    <label for="nome">Nome do Produto</label>
+                    <input type="text" id="nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="validade">Data de Validade</label>
+                    <input type="date" id="validade" required>
+                </div>
+                <div class="form-group">
+                    <label for="preco">Preço Original (R$)</label>
+                    <input type="number" id="preco" step="0.01" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="precoDesconto">Preço com Desconto (R$)</label>
+                    <input type="number" id="precoDesconto" step="0.01" min="0" required>
+                </div>
+                <button type="submit" class="submit-btn" id="submit-btn">Cadastrar Produto</button>
+            </form>
+            <div class="message success" id="form-success" style="display:none;">Produto cadastrado com sucesso!</div>
+            <div class="message error" id="form-error" style="display:none;"></div>
+        </div>
+
+        <!-- Products List -->
+        <div class="products-list" id="products-list" style="display: none;">
+            <button class="back-button" onclick="showOptions()">← Voltar</button>
+            <h2>Seus Produtos</h2>
+            <div id="products-container"></div>
+        </div>
+    </div>
+
+    <script src="empresa-dashboard.js"></script>
+</body>
+</html>
