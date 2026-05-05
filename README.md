@@ -172,3 +172,4 @@ Projeto desenvolvido como MVP para validação de negócio no setor de varejo, f
 
 **Licença**: MIT  
 **Contato**: [Seu Email/LinkedIn]
+# Test
