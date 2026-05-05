@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from dotenv import load_dotenv
 import json
@@ -200,6 +200,14 @@ def list_near_expiry():
         except ValueError:
             continue
     return jsonify(near_expiry)
+
+@app.route('/')
+def serve_index():
+    return send_from_directory('static', 'index.html')
+
+@app.route('/<path:filename>')
+def serve_static(filename):
+    return send_from_directory('static', filename)
 
 if __name__ == '__main__':
     if not os.path.exists(PRODUTOS_FILE):
