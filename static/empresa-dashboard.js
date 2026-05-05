@@ -30,7 +30,7 @@ async function accessPanel() {
     }
 
     try {
-        const response = await fetch('http://localhost:5000/empresa/produtos?codigoAcesso=' + encodeURIComponent(codigo));
+        const response = await fetch('/empresa/produtos?codigoAcesso=' + encodeURIComponent(codigo));
         if (!response.ok) {
             const error = await response.json();
             showError('error-message', error.error);
@@ -90,7 +90,7 @@ async function showManageProducts() {
 
 
     try {
-        const response = await fetch('http://localhost:5000/empresa/produtos?codigoAcesso=' + encodeURIComponent(currentCodigo));
+        const response = await fetch('/empresa/produtos?codigoAcesso=' + encodeURIComponent(currentCodigo));
         const products = await response.json();
         displayProducts(products);
     } catch (error) {
@@ -155,7 +155,7 @@ async function deleteProduct(productId) {
     if (!confirm('Tem certeza que deseja excluir este produto?')) return;
 
     try {
-        const response = await fetch('http://localhost:5000/produtos/' + productId + '?codigoAcesso=' + encodeURIComponent(currentCodigo), {
+        const response = await fetch('/produtos/' + productId + '?codigoAcesso=' + encodeURIComponent(currentCodigo), {
             method: 'DELETE'
         });
 
@@ -186,13 +186,13 @@ document.getElementById('product-form').addEventListener('submit', async (e) => 
     try {
         let response;
         if (productId) {
-            response = await fetch('http://localhost:5000/produtos/' + productId, {
+            response = await fetch('/produtos/' + productId, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             });
         } else {
-            response = await fetch('http://localhost:5000/produtos', {
+            response = await fetch('/produtos', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)

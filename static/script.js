@@ -98,7 +98,7 @@ function applyFilters() {
 
 async function fetchProducts() {
     try {
-        const response = await fetch('http://localhost:5000/produtos');
+        const response = await fetch('/produtos');
         allProducts = await response.json();
         applyFilters();
     } catch (error) {
@@ -110,7 +110,7 @@ async function fetchProducts() {
 
 async function fetchCompanies() {
     try {
-        const response = await fetch('http://localhost:5000/empresas');
+        const response = await fetch('/empresas');
         allCompanies = await response.json();
         populateCompanies(allCompanies);
     } catch (error) {
