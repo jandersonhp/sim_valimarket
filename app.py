@@ -214,10 +214,8 @@ if __name__ == '__main__':
         write_products([])
     if not os.path.exists(EMPRESAS_FILE):
         write_empresas([])
-    # Use Waitress in production (Render), Flask debug locally
+    # Usar porta do Render ou 5000 localmente
     port = int(os.environ.get('PORT', 5000))
-    if os.environ.get('RENDER'):
-        from waitress import serve
-        serve(app, host='0.0.0.0', port=port)
-    else:
-        app.run(debug=True, port=port)
+    # Em produção (Render), não usar debug
+    debug_mode = not os.environ.get('RENDER')
+    app.run(debug=debug_mode, port=port, host='0.0.0.0')
