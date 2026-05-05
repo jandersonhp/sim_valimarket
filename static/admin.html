@@ -102,6 +102,12 @@
         <div class="error-message" id="error-message"></div>
     </div>
 
+    <div class="admin-container" style="margin-top: 2rem;">
+        <h2 style="color: #2d3748; margin-bottom: 1rem;">Gerenciar Empresas</h2>
+        <div id="empresas-list"></div>
+        <div class="error-message" id="empresas-error"></div>
+    </div>
+
     <script>
         function copyCode() {
             const code = document.getElementById('code-display').textContent;
@@ -133,6 +139,7 @@
                     document.getElementById('result-box').style.display = 'block';
                     document.getElementById('error-message').style.display = 'none';
                     form.reset();
+                    loadEmpresas();
                 } else {
                     const error = await response.json();
                     document.getElementById('error-message').textContent = `Erro: ${error.error}`;
@@ -145,6 +152,64 @@
                 document.getElementById('result-box').style.display = 'none';
             }
         });
+
+        async function loadEmpresas() {
+            try {
+                const response = await fetch('/empresas');
+                if (!response.ok) {
+                    document.getElementById('empresas-error').textContent = 'Erro ao carregar empresas';
+                    document.getElementById('empresas-error').style.display = 'block';
+                    return;
+                }
+                const empresas = await response.json();
+                const container = document.getElementById('empresas-list');
+                container.innerHTML = '';
+                if (empresas.length === 0) {
+                    container.innerHTML = '<p style="color: #718096; text-align: center; padding: 1rem;">Nenhuma empresa cadastrada.</p>';
+                    return;
+                }
+                empresas.forEach(emp => {
+                    const item = document.createElement('div');
+                    item.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 1rem; margin-bottom: 0.5rem; background: #f7fafc; border-radius: 8px; flex-wrap: wrap; gap: 0.5rem;';
+                    item.innerHTML = `
+                        <div>
+                            <strong>${emp.nome}</strong><br>
+                            <small style="color: #718096;">${emp.telefone} | ${emp.endereco}</small>
+                        </div>
+                        <button class="delete-btn" onclick="deleteEmpresa('${emp.nome}', '${emp.telefone}')" style="background: #e53e3e; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Excluir</button>
+                    `;
+                    container.appendChild(item);
+                });
+            } catch (error) {
+                document.getElementById('empresas-error').textContent = 'Erro ao carregar empresas';
+                document.getElementById('empresas-error').style.display = 'block';
+            }
+        }
+
+        async function deleteEmpresa(nome, telefone) {
+            if (!confirm(`Tem certeza que deseja excluir a empresa "${nome}"? Todos os seus produtos também serão excluídos.`)) return;
+
+            try {
+                const response = await fetch(`/admin/empresas?nome=${encodeURIComponent(nome)}&telefone=${encodeURIComponent(telefone)}`, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ adminCode: document.getElementById('adminCode').value })
+                });
+
+                if (response.ok) {
+                    alert('Empresa excluída com sucesso!');
+                    loadEmpresas();
+                } else {
+                    const error = await response.json();
+                    alert(`Erro: ${error.error || 'Erro ao excluir'}`);
+                }
+            } catch (error) {
+                alert('Erro ao conectar com o servidor.');
+            }
+        }
+
+        // Carrega empresas ao iniciar
+        loadEmpresas();
     </script>
 </body>
 </html>

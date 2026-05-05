@@ -689,3 +689,53 @@ header p {
         padding: 0.7rem 1.5rem;
     }
 }
+
+/* Mobile adjustments for empresa-dashboard and admin */
+@media (max-width: 600px) {
+    .options-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .option-card {
+        padding: 1.5rem 1rem;
+    }
+
+    .option-card .icon {
+        font-size: 2.5rem;
+    }
+
+    .option-card h3 {
+        font-size: 1.2rem;
+    }
+
+    .product-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: stretch;
+    }
+
+    .btn-edit, .btn-delete {
+        width: 100%;
+        padding: 0.8rem;
+        text-align: center;
+    }
+
+    .form-card {
+        padding: 1.5rem 1rem;
+    }
+
+    .admin-container {
+        padding: 1.5rem 1rem;
+    }
+
+    .admin-container > div[style*="flex"] {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .delete-btn {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+}

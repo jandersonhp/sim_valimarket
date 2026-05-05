@@ -13,22 +13,35 @@ CORS(app)
 ADMIN_CODE = os.environ.get('ACCESS_CODE')
 MONGODB_URI = os.environ.get('MONGODB_URI')
 
-if not MONGODB_URI:
-    print("ERRO: MONGODB_URI nao definida. Configure a variavel de ambiente.")
-    exit(1)
+mongo_client = None
+db = None
 
-try:
-    from pymongo import MongoClient
-    mongo_client = MongoClient(MONGODB_URI, serverSelectionTimeoutMS=5000)
-    mongo_client.admin.command('ping')
+def check_db():
+    if db is None:
+        return jsonify({'error': 'Servico temporariamente indisponivel. Tente novamente em instantes.'}), 503
+    return None
+
+if MONGODB_URI:
     try:
-        db = mongo_client.get_default_database()
-    except:
-        db = mongo_client['valimarket']
-    print("MongoDB conectado com sucesso!")
-except Exception as e:
-    print(f"Erro ao conectar no MongoDB: {e}")
-    exit(1)
+        from pymongo import MongoClient
+        mongo_client = MongoClient(
+            MONGODB_URI,
+            serverSelectionTimeoutMS=30000,
+            connectTimeoutMS=30000,
+            tlsAllowInvalidCertificates=True
+        )
+        mongo_client.admin.command('ping')
+        try:
+            db = mongo_client.get_default_database()
+        except:
+            db = mongo_client['valimarket']
+        print("MongoDB conectado com sucesso!")
+    except Exception as e:
+        print(f"Erro ao conectar no MongoDB: {e}")
+        mongo_client = None
+        db = None
+else:
+    print("ERRO: MONGODB_URI nao definida.")
 
 def find_empresa_by_codigo(codigo):
     return db.empresas.find_one({'codigoAcesso': codigo}, {'_id': 0})
@@ -39,6 +52,10 @@ def generate_access_code(nome_empresa):
 
 @app.route('/empresas', methods=['POST'])
 def create_empresa():
+    db_check = check_db()
+    if db_check:
+        return db_check
+
     data = request.get_json()
     if not data or data.get('adminCode') != ADMIN_CODE:
         return jsonify({'error': 'Acesso nao autorizado'}), 403
@@ -64,6 +81,10 @@ def create_empresa():
 
 @app.route('/empresas', methods=['GET'])
 def list_empresas():
+    db_check = check_db()
+    if db_check:
+        return db_check
+
     empresas = list(db.empresas.find({}, {'_id': 0}))
     safe_empresas = []
     for e in empresas:
@@ -73,6 +94,10 @@ def list_empresas():
 
 @app.route('/produtos', methods=['POST'])
 def create_product():
+    db_check = check_db()
+    if db_check:
+        return db_check
+
     data = request.get_json()
     if not data:
         return jsonify({'error': 'Dados invalidos'}), 400
@@ -105,10 +130,16 @@ def create_product():
 
 @app.route('/produtos', methods=['GET'])
 def list_products():
+    db_check = check_db()
+    if db_check:
+        return db_check
     return jsonify(list(db.produtos.find({}, {'_id': 0})))
 
 @app.route('/produtos/<product_id>', methods=['PUT'])
 def update_product(product_id):
+    db_check = check_db()
+    if db_check:
+        return db_check
     data = request.get_json()
     if not data:
         return jsonify({'error': 'Dados invalidos'}), 400
@@ -144,6 +175,9 @@ def update_product(product_id):
 
 @app.route('/produtos/<product_id>', methods=['DELETE'])
 def delete_product(product_id):
+    db_check = check_db()
+    if db_check:
+        return db_check
     codigo = request.args.get('codigoAcesso')
     if not codigo:
         return jsonify({'error': 'Codigo de acesso necessario'}), 400
@@ -164,6 +198,9 @@ def delete_product(product_id):
 
 @app.route('/empresa/produtos', methods=['GET'])
 def list_empresa_products():
+    db_check = check_db()
+    if db_check:
+        return db_check
     codigo = request.args.get('codigoAcesso')
     if not codigo:
         return jsonify({'error': 'Codigo de acesso necessario'}), 400
@@ -177,6 +214,9 @@ def list_empresa_products():
 
 @app.route('/produtos/proximos', methods=['GET'])
 def list_near_expiry():
+    db_check = check_db()
+    if db_check:
+        return db_check
     products = list(db.produtos.find({}, {'_id': 0}))
     today = datetime.now().date()
     three_days = today + timedelta(days=3)
@@ -189,6 +229,32 @@ def list_near_expiry():
         except ValueError:
             continue
     return jsonify(near_expiry)
+
+
+@app.route('/admin/empresas', methods=['DELETE'])
+def delete_empresa_admin():
+    db_check = check_db()
+    if db_check:
+        return db_check
+
+    data = request.get_json()
+    if not data or data.get('adminCode') != ADMIN_CODE:
+        return jsonify({'error': 'Acesso nao autorizado'}), 403
+
+    nome = data.get('nome')
+    telefone = data.get('telefone')
+    if not nome or not telefone:
+        return jsonify({'error': 'nome e telefone sao obrigatorios'}), 400
+
+    # Remove produtos da empresa
+    db.produtos.delete_many({'empresa': nome})
+    # Remove a empresa
+    result = db.empresas.delete_one({'nome': nome, 'telefone': telefone})
+
+    if result.deleted_count == 0:
+        return jsonify({'error': 'Empresa nao encontrada'}), 404
+
+    return jsonify({'message': 'Empresa excluida com sucesso'}), 200
 
 @app.route('/')
 def serve_index():
