@@ -3,6 +3,11 @@ let allCompanies = [];
 let currentFilter = 'all';
 
 function formatDate(isoDate) {
+    // isoDate pode ser 'YYYY-MM-DD' - evitar erro de timezone
+    if (typeof isoDate === 'string' && isoDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        const parts = isoDate.split('-');
+        return parts[2] + '/' + parts[1] + '/' + parts[0].slice(-2);
+    }
     const date = new Date(isoDate);
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -16,11 +21,13 @@ function createWhatsAppLink(phone) {
 }
 
 function isNearExpiry(validade) {
+    // Parse manual YYYY-MM-DD para evitar erro de timezone
+    const parts = validade.split('-');
+    const expiry = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const threeDays = new Date(today);
     threeDays.setDate(today.getDate() + 3);
-    const expiry = new Date(validade);
     return expiry >= today && expiry <= threeDays;
 }
 

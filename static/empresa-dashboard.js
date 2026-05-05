@@ -99,13 +99,21 @@ async function showManageProducts() {
 }
 
 function formatDate(isoDate) {
+    // isoDate pode ser 'YYYY-MM-DD' - evitar erro de timezone
+    if (typeof isoDate === 'string' && isoDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        const parts = isoDate.split('-');
+        const day = parts[2];
+        const month = parts[1];
+        const year = parts[0].slice(-2);
+        return day + '/' + month + '/' + year;
+    }
     const date = new Date(isoDate);
     const d = date.getDate();
     const m = date.getMonth() + 1;
     const y = date.getFullYear().toString().slice(-2);
-    const day = d < 10 ? '0' + d : d;
-    const month = m < 10 ? '0' + m : m;
-    return day + '/' + month + '/' + y;
+    const dayStr = d < 10 ? '0' + d : d;
+    const monthStr = m < 10 ? '0' + m : m;
+    return dayStr + '/' + monthStr + '/' + y;
 }
 
 function displayProducts(products) {
