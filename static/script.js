@@ -3,7 +3,6 @@ let allCompanies = [];
 let currentFilter = 'all';
 
 function formatDate(isoDate) {
-    // isoDate pode ser 'YYYY-MM-DD' - evitar erro de timezone
     if (typeof isoDate === 'string' && isoDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
         const parts = isoDate.split('-');
         return parts[2] + '/' + parts[1] + '/' + parts[0].slice(-2);
@@ -21,7 +20,6 @@ function createWhatsAppLink(phone) {
 }
 
 function isNearExpiry(validade) {
-    // Parse manual YYYY-MM-DD para evitar erro de timezone
     const parts = validade.split('-');
     const expiry = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
     const today = new Date();
@@ -29,6 +27,14 @@ function isNearExpiry(validade) {
     const threeDays = new Date(today);
     threeDays.setDate(today.getDate() + 3);
     return expiry >= today && expiry <= threeDays;
+}
+
+function isExpired(validade) {
+    const parts = validade.split('-');
+    const expiry = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return expiry < today;
 }
 
 function renderProducts(products) {
@@ -43,15 +49,19 @@ function renderProducts(products) {
     products.forEach(product => {
         const card = document.createElement('div');
         card.className = 'product-card';
+
         const validade = formatDate(product.validade);
         const whatsappLink = createWhatsAppLink(product.telefone);
         const nearExpiry = isNearExpiry(product.validade);
+        const expired = isExpired(product.validade);
+        const discount = Math.round(((product.preco - product.precoDesconto) / product.preco) * 100);
 
         let priceHtml = '';
         if (nearExpiry) {
             priceHtml = '<div class="price">' +
                 '<span class="original-price">R$ ' + product.preco.toFixed(2) + '</span>' +
                 '<span class="discount-price">R$ ' + product.precoDesconto.toFixed(2) + '</span>' +
+                '<span style="background: #f59e0b; color: white; padding: 4px 10px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; margin-left: 8px;">' + discount + '% OFF</span>' +
                 '</div>';
         } else {
             priceHtml = '<div class="price">' +
@@ -59,12 +69,12 @@ function renderProducts(products) {
                 '</div>';
         }
 
-        card.innerHTML = '<h3>' + product.nome + '</h3>' +
+        card.innerHTML = '<h3>' + (expired ? '<s>' + product.nome + '</s> (Vencido)' : product.nome) + '</h3>' +
             '<p class="empresa">' + product.empresa + '</p>' +
             priceHtml +
-            '<p class="validade ' + (nearExpiry ? 'near-expiry' : '') + '">Validade: ' + validade + '</p>' +
+            '<p class="validade ' + (nearExpiry ? 'near-expiry' : '') + (expired ? ' style="text-decoration: line-through;"' : '') + '">Validade: ' + validade + '</p>' +
             '<p class="address">📍 ' + product.endereco + '</p>' +
-            '<a href="' + whatsappLink + '" target="_blank" class="whatsapp-btn">📞 WhatsApp</a>';
+            (expired ? '' : '<a href="' + whatsappLink + '" target="_blank" class="whatsapp-btn">📞 WhatsApp</a>');
 
         container.appendChild(card);
     });
@@ -84,6 +94,9 @@ function applyFilters() {
     const searchTerm = document.getElementById('search-input').value.toLowerCase();
     const selectedCompany = document.getElementById('company-select').value;
     let filtered = allProducts;
+
+    // Remove produtos vencidos da visualização pública
+    filtered = filtered.filter(p => !isExpired(p.validade));
 
     if (currentFilter === 'near') {
         filtered = filtered.filter(p => isNearExpiry(p.validade));
@@ -141,5 +154,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fetchProducts();
     fetchCompanies();
-    setInterval(fetchProducts, 60000);
+    // Removido o setInterval para não interromper o usuário
 });

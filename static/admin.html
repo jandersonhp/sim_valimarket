@@ -2,7 +2,6 @@
 <html lang="pt-BR">
 <head>
     <link rel="icon" type="image/png" href="favicon.png">
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ValiMarket - Admin</title>
@@ -51,6 +50,201 @@
         .copy-btn:hover {
             background-color: #3182ce;
         }
+        .stats-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .stat-card {
+            flex: 1;
+            min-width: 120px;
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .stat-card .number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #38a169;
+        }
+        .stat-card .label {
+            font-size: 0.85rem;
+            color: #718096;
+            margin-top: 0.3rem;
+        }
+        .search-companies {
+            margin-bottom: 1.5rem;
+        }
+        .search-companies input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .search-companies input:focus {
+            outline: none;
+            border-color: #38a169;
+            box-shadow: 0 0 0 3px rgba(56, 161, 105, 0.1);
+        }
+        .empresa-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            transition: box-shadow 0.2s;
+        }
+        .empresa-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .empresa-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+            gap: 1rem;
+        }
+        .empresa-header strong {
+            color: #2d3748;
+            font-size: 1.1rem;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+        .empresa-header small {
+            color: #718096;
+            font-size: 0.85rem;
+        }
+        .codigo-badge {
+            background: #f0fff4;
+            color: #276749;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .empresa-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-top: 0.8rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid #f0f0f0;
+        }
+        .empresa-actions input {
+            flex: 1;
+            padding: 0.5rem 0.8rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        .empresa-actions input:focus {
+            outline: none;
+            border-color: #38a169;
+        }
+        .delete-btn {
+            background: #e53e3e;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+        .delete-btn:hover {
+            background: #c53030;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #718096;
+        }
+        .empty-state span {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .modal h3 {
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+        .modal p {
+            color: #718096;
+            margin-bottom: 1.5rem;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+        .modal-btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .modal-btn-cancel {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+        .modal-btn-cancel:hover {
+            background: #cbd5e0;
+        }
+        .modal-btn-confirm {
+            background: #e53e3e;
+            color: white;
+        }
+        .modal-btn-confirm:hover {
+            background: #c53030;
+        }
+        @media (max-width: 600px) {
+            .empresa-header {
+                flex-direction: column;
+            }
+            .empresa-actions {
+                flex-direction: column;
+            }
+            .empresa-actions input {
+                width: 100%;
+            }
+            .delete-btn {
+                width: 100%;
+            }
+            .stats-bar {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
@@ -58,13 +252,14 @@
         <div class="header-content">
             <div>
                 <h1>ValiMarket - Admin</h1>
-                <p>Cadastro de novas empresas</p>
+                <p>Gerenciamento de empresas cadastradas</p>
             </div>
             <a href="index.html" class="btn-back">← Início</a>
         </div>
     </header>
 
     <div class="admin-container">
+        <h2 style="color: #2d3748; margin-bottom: 1.5rem;">Cadastrar Nova Empresa</h2>
         <form id="admin-form">
             <div class="form-group">
                 <label for="adminCode">Sua Senha de Admin</label>
@@ -102,13 +297,39 @@
         <div class="error-message" id="error-message"></div>
     </div>
 
-    <div class="admin-container" style="margin-top: 2rem;">
-        <h2 style="color: #2d3748; margin-bottom: 1rem;">Gerenciar Empresas</h2>
+    <div style="max-width: 800px; margin: 2rem auto; padding: 0 1rem;">
+        <h2 style="color: #2d3748; margin-bottom: 1.5rem;">Empresas Cadastradas</h2>
+
+        <div class="stats-bar" id="stats-bar">
+            <div class="stat-card">
+                <div class="number" id="stat-total">0</div>
+                <div class="label">Total de Empresas</div>
+            </div>
+        </div>
+
+        <div class="search-companies">
+            <input type="text" id="search-empresas" placeholder="Buscar empresa por nome...">
+        </div>
+
         <div id="empresas-list"></div>
         <div class="error-message" id="empresas-error"></div>
     </div>
 
+    <!-- Modal de Confirmação -->
+    <div class="modal-overlay" id="modal-confirm">
+        <div class="modal">
+            <h3 id="modal-title">Confirmar Exclusão</h3>
+            <p id="modal-text">Tem certeza que deseja excluir esta empresa?</p>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-cancel" onclick="closeModal()">Cancelar</button>
+                <button class="modal-btn modal-btn-confirm" id="modal-confirm-btn">Excluir</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        let empresasData = [];
+
         function copyCode() {
             const code = document.getElementById('code-display').textContent;
             navigator.clipboard.writeText(code);
@@ -153,6 +374,43 @@
             }
         });
 
+        function renderEmpresas(empresas) {
+            const container = document.getElementById('empresas-list');
+            container.innerHTML = '';
+
+            if (empresas.length === 0) {
+                container.innerHTML = '<div class="empty-state"><span>🏪</span><p>Nenhuma empresa encontrada.</p></div>';
+                return;
+            }
+
+            empresas.forEach(emp => {
+                const card = document.createElement('div');
+                card.className = 'empresa-card';
+                card.dataset.nome = emp.nome;
+                card.dataset.telefone = emp.telefone;
+
+                card.innerHTML = `
+                    <div class="empresa-header">
+                        <div>
+                            <strong>${emp.nome}</strong>
+                            <small>📞 ${emp.telefone}</small><br>
+                            <small>📍 ${emp.endereco}</small>
+                        </div>
+                        <div class="codigo-badge">Código: ${emp.codigoAcesso || 'N/A'}</div>
+                    </div>
+                    <div class="empresa-actions">
+                        <input type="password" placeholder="Sua senha admin" class="admin-code-input">
+                        <button class="delete-btn" onclick="showDeleteModal('${emp.nome}', '${emp.telefone}')">Excluir</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function updateStats() {
+            document.getElementById('stat-total').textContent = empresasData.length;
+        }
+
         async function loadEmpresas() {
             try {
                 const response = await fetch('/empresas');
@@ -161,62 +419,81 @@
                     document.getElementById('empresas-error').style.display = 'block';
                     return;
                 }
-                const empresas = await response.json();
-                const container = document.getElementById('empresas-list');
-                container.innerHTML = '';
-                if (empresas.length === 0) {
-                    container.innerHTML = '<p style="color: #718096; text-align: center; padding: 1rem;">Nenhuma empresa cadastrada.</p>';
-                    return;
-                }
-                empresas.forEach(emp => {
-                    const item = document.createElement('div');
-                    item.style.cssText = 'display: flex; justify-content: space-between; align-items: flex-start; padding: 1rem; margin-bottom: 0.5rem; background: #f7fafc; border-radius: 8px; flex-wrap: wrap; gap: 0.5rem;';
-                    item.innerHTML = `
-                        <div>
-                            <strong>${emp.nome}</strong><br>
-                            <small style="color: #718096;">${emp.telefone} | ${emp.endereco}</small><br>
-                            <small style="color: #38a169; font-weight: 500;">Código: ${emp.codigoAcesso || 'N/A'}</small>
-                        </div>
-                        <div style="display: flex; flex-direction: column; gap: 0.5rem; min-width: 120px;">
-                            <input type="password" placeholder="Sua senha admin" id="admin-code-${emp.nome.replace(/\s/g, '-')}" style="padding: 0.4rem; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.9rem;">
-                            <button class="delete-btn" onclick="deleteEmpresa('${emp.nome}', '${emp.telefone}')" style="background: #e53e3e; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Excluir</button>
-                        </div>
-                    `;
-                    container.appendChild(item);
-                });
+                empresasData = await response.json();
+                updateStats();
+                renderEmpresas(empresasData);
             } catch (error) {
                 document.getElementById('empresas-error').textContent = 'Erro ao carregar empresas';
                 document.getElementById('empresas-error').style.display = 'block';
             }
         }
 
-        async function deleteEmpresa(nome, telefone) {
-            if (!confirm(`Tem certeza que deseja excluir a empresa "${nome}"? Todos os seus produtos também serão excluídos.`)) return;
+        // Busca de empresas
+        document.getElementById('search-empresas').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = empresasData.filter(emp =>
+                emp.nome.toLowerCase().includes(term) ||
+                emp.telefone.includes(term)
+            );
+            renderEmpresas(filtered);
+        });
 
-            const adminCode = document.getElementById(`admin-code-${nome.replace(/\s/g, '-')}`).value;
+        // Modal de confirmação
+        let deleteCallback = null;
+
+        function showDeleteModal(nome, telefone) {
+            const card = document.querySelector(`[data-nome="${nome}"][data-telefone="${telefone}"]`);
+            const adminCodeInput = card.querySelector('.admin-code-input');
+            const adminCode = adminCodeInput.value;
+
             if (!adminCode) {
                 alert('Digite sua senha de admin para excluir.');
+                adminCodeInput.focus();
                 return;
             }
 
-            try {
-                const response = await fetch(`/admin/empresas`, {
-                    method: 'DELETE',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ adminCode: adminCode, nome: nome, telefone: telefone })
-                });
+            document.getElementById('modal-text').textContent =
+                `Tem certeza que deseja excluir a empresa "${nome}"? Todos os seus produtos também serão excluídos.`;
 
-                if (response.ok) {
-                    alert('Empresa excluída com sucesso!');
-                    loadEmpresas();
-                } else {
-                    const error = await response.json();
-                    alert(`Erro: ${error.error || 'Erro ao excluir'}`);
+            deleteCallback = async () => {
+                try {
+                    const response = await fetch(`/admin/empresas`, {
+                        method: 'DELETE',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ adminCode: adminCode, nome: nome, telefone: telefone })
+                    });
+
+                    if (response.ok) {
+                        alert('Empresa excluída com sucesso!');
+                        loadEmpresas();
+                    } else {
+                        const error = await response.json();
+                        alert(`Erro: ${error.error || 'Erro ao excluir'}`);
+                    }
+                } catch (error) {
+                    alert('Erro ao conectar com o servidor.');
                 }
-            } catch (error) {
-                alert('Erro ao conectar com o servidor.');
-            }
+                closeModal();
+            };
+
+            document.getElementById('modal-confirm').classList.add('active');
         }
+
+        document.getElementById('modal-confirm-btn').addEventListener('click', () => {
+            if (deleteCallback) deleteCallback();
+        });
+
+        function closeModal() {
+            document.getElementById('modal-confirm').classList.remove('active');
+            deleteCallback = null;
+        }
+
+        // Fechar modal clicando fora
+        document.getElementById('modal-confirm').addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal-overlay')) {
+                closeModal();
+            }
+        });
 
         // Carrega empresas ao iniciar
         loadEmpresas();
