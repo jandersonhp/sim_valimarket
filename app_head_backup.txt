@@ -1,0 +1,20 @@
+from flask import Flask, jsonify, request, send_from_directory
+from flask_cors import CORS
+from dotenv import load_dotenv
+import os
+import uuid
+import unicodedata
+import re
+from datetime import datetime, timedelta
+
+load_dotenv()
+
+app = Flask(__name__)
+
+# CORS restrito - apenas origens permitidas
+allowed_origins = os.environ.get('ALLOWED_ORIGINS', '*').split(',')
+if '*' in allowed_origins:
+    CORS(app)  # Dev mode
+else:
+    CORS(app, origins=allowed_origins)
+

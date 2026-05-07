@@ -16,7 +16,8 @@ function formatDate(isoDate) {
 
 function createWhatsAppLink(phone) {
     const cleaned = phone.replace(/\D/g, '');
-    return 'https://wa.me/' + cleaned;
+    const withCountry = cleaned.startsWith('55') ? cleaned : '55' + cleaned;
+    return 'https://wa.me/' + withCountry;
 }
 
 function isNearExpiry(validade) {
