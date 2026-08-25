@@ -55,63 +55,6 @@ Criar uma plataforma simples, funcional e profissional que demonstre valor real 
 - ✅ CORS habilitado para integração segura
 - ✅ Produtos vencidos ocultos da visualização pública (conformidade legal)
 
-## 📁 Estrutura do Projeto
-
-```
-sim_valimarket/
-├── .gitignore
-├── README.md
-├── app.py                  # API Flask (rotas GET, POST, PUT, DELETE)
-├── .env                    # Variáveis de ambiente (NUNCA commitado)
-├── .env.example            # Modelo de configuração
-├── requirements.txt         # Dependências Python
-└── static/
-    ├── index.html           # Landing page (página inicial)
-    ├── ofertas.html        # Vitrine de produtos para clientes
-    ├── empresa.html        # Painel da empresa
-    ├── admin.html          # Painel administrativo
-    ├── script.js           # Lógica da vitrine (filtros, % OFF, expiry)
-    ├── empresa-dashboard.js # Lógica do painel da empresa
-    ├── style.css           # Estilos globais (mobile-first)
-    └── favicon.png        # Ícone do site
-```
-
-## 🚀 Como Executar
-
-### 1. Clone o repositório
-```bash
-git clone https://github.com/jandersonhp/sim_valimarket.git
-cd sim_valimarket
-```
-
-### 2. Configurar o Backend
-```bash
-cp .env.example .env
-# Edite o .env e defina:
-# ACCESS_CODE=sua_senha_admin
-# MONGODB_URI=sua_uri_mongodb_atlas
-pip install -r requirements.txt
-python app.py
-```
-O backend rodará em `http://localhost:5000`.
-
-### 3. Acessar o Frontend
-Abra `http://localhost:5000` no navegador (o Flask serve os arquivos estáticos automaticamente).
-
-## 🌐 Deploy no Render
-
-O projeto usa um único serviço no Render:
-
-1. Acesse [Render.com](https://render.com) e conecte seu repositório GitHub
-2. Crie um **Web Service** com:
-   - **Build Command**: `pip install -r requirements.txt`
-   - **Start Command**: `python app.py`
-   - **Instance Type**: Free
-3. Adicione as variáveis de ambiente:
-   - `ACCESS_CODE`: sua senha admin
-   - `MONGODB_URI`: sua URI do MongoDB Atlas
-   - `RENDER`: 1 (desativa o debug mode)
-4. O Flask serve tanto a API quanto os arquivos estáticos
 
 ## 📋 Exemplo de Uso
 
@@ -160,6 +103,38 @@ O projeto usa um único serviço no Render:
 ✅ Estrutura limpa para portfólio  
 🚧 Em fase de testes e validação de negócio  
 
+
+## 📸 Galeria de Screenshots
+
+Aqui estão as capturas de tela do projeto em funcionamento:
+
+<details>
+  <summary>🌐 <b>Clique para ver a Tela Inicial</b></summary>
+  <br>
+  <img src="./assets/01home.png" width="600" alt="Home parte 1"><br><br>
+  <img src="./assets/02home.png" width="600" alt="Home parte 2"><br><br>
+  <img src="./assets/03home.png" width="600" alt="Home parte 3">
+</details>
+
+<details>
+  <summary>🏷️ <b>Clique para ver o Painel de Ofertas</b></summary>
+  <br>
+  <img src="./assets/04ofertas.png" width="600" alt="Painel de Ofertas">
+</details>
+
+<details>
+  <summary>🏢 <b>Clique para ver o Painel da Empresa</b></summary>
+  <br>
+  <img src="./assets/05empresa.png" width="600" alt="Empresa parte 1"><br><br>
+  <img src="./assets/06empresa.png" width="600" alt="Empresa parte 2"><br><br>
+  <img src="./assets/07empresa.png" width="600" alt="Empresa parte 3"><br><br>
+  <img src="./assets/08empresa.png" width="600" alt="Empresa parte 4">
+</details>
+<br>
+
+Veja a galeria completa de telas do sistema na pasta [assets](./assets).
+
+
 ## 🔮 Sobre o Autor
 
 Projeto desenvolvido por **Janderson Duarte**, estudante de Análise e Desenvolvimento de Sistemas.
@@ -172,5 +147,4 @@ O ValiMarket nasceu como um projeto acadêmico, mas percebi seu potencial real: 
 
 ---
 
-**Licença**: MIT  
 **Contato**: jandersonduarte@yahoo.com.br
