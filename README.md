@@ -4,6 +4,25 @@
 
 O **ValiMarket** é um MVP (Minimum Viable Product) desenvolvido para conectar comércios que precisam vender produtos próximos ao vencimento com desconto a consumidores que buscam ofertas. Somos apenas uma vitrine digital — os negócios são feitos diretamente com os estabelecimentos.
 
+🔗 [Site Funcional](https://valimarket.onrender.com/index.html)
+
+---
+
+## 📌 Sumário
+
+- [🎯 Objetivo](#-objetivo)
+- [✨ Tecnologias Utilizadas](#-tecnologias-utilizadas)
+- [🚀 Funcionalidades](#-funcionalidades)
+- [🔧 Segurança e Boas Práticas](#-segurança-e-boas-práticas)
+- [📋 Exemplo de Uso](#-exemplo-uso)
+- [💻 Como Executar o Projeto](#-como-executar-o-projeto)
+- [🎨 Design e UX](#-design-e-ux)
+- [📈 Status do Projeto](#-status-do-projeto)
+- [📸 Galeria de Screenshots](#-galeria-de-screenshots)
+- [🔮 Sobre o Autor](#-sobre-o-autor)
+
+---
+
 ## 🎯 Objetivo
 
 Criar uma plataforma simples, funcional e profissional que demonstre valor real para comércios (mercados, padarias, hortifrutis) e consumidores, servindo como portal de entrada para validação de negócio.
